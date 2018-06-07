@@ -16,3 +16,9 @@ mark-common-web web基础jar
 mark-common-web-war 基础web项目
 
 mark-common-web-war-overlay 基于maven overlay搭建的web项目
+
+mark-dubboapi-bom dubbo 接口依赖包
+
+mark-dubbo-bom dubbo 服务端依赖包
+
+mark-rest-bom dubbo 提供 rest接口所需依赖包
