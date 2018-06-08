@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" 
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.mark.common.dao.IBookDao">
+
+    <resultMap id="BookMap" type="com.mark.common.domain.Book">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="image" column="image"/>
+        <result property="description" column="description"/>
+        <result property="price" column="price"/>
+        <result property="category" column="category"/>
+        <result property="createdTime" column="created_time"/>
+    </resultMap>
+    
+    <sql id="columns">
+        <![CDATA[
+        id, name, image, description, price, category, created_time
+        ]]>
+    </sql>
+    
+    <sql id="where">
+        <where>
+           <if test="@Ognl@isNotEmpty(id)">
+                AND id = #{id}
+            </if>
+           <if test="@Ognl@isNotEmpty(name)">
+                AND name = #{name}
+            </if>
+           <if test="@Ognl@isNotEmpty(image)">
+                AND image = #{image}
+            </if>
+           <if test="@Ognl@isNotEmpty(description)">
+                AND description = #{description}
+            </if>
+           <if test="@Ognl@isNotEmpty(price)">
+                AND price = #{price}
+            </if>
+           <if test="@Ognl@isNotEmpty(category)">
+                AND category = #{category}
+            </if>
+           <if test="@Ognl@isNotEmpty(createdTimeBegin)">
+                AND created_time >= #{createdTimeBegin}
+           </if>
+           <if test="@Ognl@isNotEmpty(createdTimeEnd)">
+                AND created_time &lt;= #{createdTimeEnd}
+           </if>
+        </where>
+    </sql>
+    
+    <select id="getByPk" resultMap="BookMap">
+        SELECT <include refid="columns" />
+        <![CDATA[
+            FROM
+                book
+            WHERE 
+                id = #{id} 
+        ]]>
+    </select>
+    
+    <select id="search" resultMap="BookMap">
+        SELECT
+            <include refid="columns" />
+        FROM
+            book 
+        <include refid="where"/>
+        <if test="@Ognl@isNotEmpty(sortBy)">
+            ORDER BY ${sortBy}
+        </if>
+        <if test="start gt -1 and pageSize lt 10000">
+            LIMIT #{start}, #{pageSize}
+        </if>
+    </select>
+    
+    <select id="queryByPage" resultMap="BookMap">
+        SELECT
+            <include refid="columns" />
+        FROM
+            book 
+        <include refid="where"/>
+        <if test="@Ognl@isNotEmpty(sortBy)">
+            ORDER BY ${sortBy}
+        </if>
+       LIMIT #{start}, #{pageSize}
+    </select>
+        
+    <select id="getCount" resultType="long">
+        <![CDATA[
+            SELECT
+                count(1)
+            FROM
+                book
+        ]]>
+        <include refid="where"/>
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" >
+        <![CDATA[
+            INSERT INTO book (
+                name,
+                image,
+                description,
+                price,
+                category,
+                created_time
+            ) VALUES (
+                #{name},
+                #{image},
+                #{description},
+                #{price},
+                #{category},
+                #{createdTime}
+            )
+        ]]>
+    </insert>
+
+    <insert id="insertBatch">
+        <![CDATA[
+            INSERT INTO book (
+                name,
+                image,
+                description,
+                price,
+                category,
+                created_time
+            ) VALUES
+        ]]>
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.name},#{item.image},#{item.description},#{item.price},#{item.category},#{item.createdTime})
+        </foreach>
+    </insert>
+    
+    <update id="update">
+        	UPDATE
+                book
+            <set>
+                <![CDATA[ name = #{name} ]]>,
+                <![CDATA[ image = #{image} ]]>,
+                <![CDATA[ description = #{description} ]]>,
+                <![CDATA[ price = #{price} ]]>,
+                <![CDATA[ category = #{category} ]]>,
+                <![CDATA[ created_time = #{createdTime} ]]>
+            </set>
+            <where> 
+                id = #{id}
+                
+            </where>
+    </update>
+    
+    <update id="updatePart">
+            UPDATE
+                book
+            <set>
+                <if test="name != null">
+                	<![CDATA[ name = #{name} ]]>,
+                </if>
+                <if test="image != null">
+                	<![CDATA[ image = #{image} ]]>,
+                </if>
+                <if test="description != null">
+                	<![CDATA[ description = #{description} ]]>,
+                </if>
+                <if test="price != null">
+                	<![CDATA[ price = #{price} ]]>,
+                </if>
+                <if test="category != null">
+                	<![CDATA[ category = #{category} ]]>,
+                </if>
+                <if test="createdTime != null">
+                	<![CDATA[ created_time = #{createdTime} ]]>
+                </if>
+            </set>
+            <where>
+                id = #{id}
+                
+            </where>
+    </update>
+    
+    <delete id="deleteByPk">
+        <![CDATA[
+            DELETE
+            FROM
+                book
+            WHERE
+                id = #{id}
+                
+        ]]>
+    </delete>
+    
+    <delete id="deleteBatchByPks">
+        <![CDATA[
+            DELETE
+            FROM
+                book
+            WHERE
+        ]]>
+        <foreach collection="list" item="item" index="index" open="(" separator=" or " close=")">
+            	#{item.id}
+        </foreach>
+    </delete>
+</mapper> 
+

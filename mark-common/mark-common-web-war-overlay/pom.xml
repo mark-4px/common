@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.mark.common</groupId>
+		<artifactId>mark-common</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>mark-common-web-war-overlay</artifactId>
+	<packaging>war</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.mark.common</groupId>
+			<artifactId>mark-common-web-war</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+			<type>war</type>
+			<scope>runtime</scope>
+		</dependency>
+
+	</dependencies>
+
+
+	<build>
+
+		<finalName>mark-common-web-war-overlay</finalName>
+
+		<plugins>
+		
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.2.1</version>
+				<configuration>
+					<overlays>
+						<overlay>
+							<groupId>com.mark.common</groupId>
+							<artifactId>mark-common-web-war</artifactId>
+							<excludes>
+								<exclude>**/application.properties</exclude>
+								<exclude>**/logback.xml</exclude>
+								<exclude>**/webdefault.xml</exclude>
+								<exclude>**/web.xml</exclude>
+							</excludes>
+						</overlay>
+					</overlays>
+					<!-- <dependentWarExcludes>*.properties,logback.xml,**/css</dependentWarExcludes> -->
+					<!-- <dependentWarIncludes>**/IncludeME,**/images</dependentWarIncludes> -->
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.2.9.v20150224</version>
+				<configuration>
+					<scanIntervalSeconds>3</scanIntervalSeconds>
+					<reload>automatic</reload>
+					<webApp>
+						<contextPath>/</contextPath>
+						<defaultsDescriptor>${basedir}/src/main/resources/webdefault.xml</defaultsDescriptor>
+						<descriptor>${basedir}/src/main/webapp/WEB-INF/web.xml</descriptor>
+					</webApp>
+					<httpConnector>
+						<port>8080</port>
+						<idleTimeout>6000</idleTimeout>
+					</httpConnector>
+				</configuration>
+			</plugin>
+			
+		</plugins>
+	</build>
+</project>

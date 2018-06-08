@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+       "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+
+<tiles-definitions>
+	<!-- 定义默认模板视图，用于表单 -->
+	<definition name="baseTemplate" template="/WEB-INF/pages/layout/tiles-layout.jsp">
+		<put-attribute name="title" value="管理后台" />
+		<put-attribute name="sidebar" value="/WEB-INF/pages/public/tiles-sidebar.jsp" />
+		<put-attribute name="header" value="/WEB-INF/pages/public/tiles-header.jsp" />
+		<put-attribute name="content"
+			value="/WEB-INF/pages/public/tiles-main.jsp" />
+		<put-attribute name="footer"
+			value="/WEB-INF/pages/public/tiles-footer.jsp" />
+		<put-list-attribute name="stylesheets">
+			<add-attribute value="http://cdn.mark.ah.cn/bootstrap/3.0.3/css/bootstrap.min.css" />
+			<add-attribute value="/css/style.css" />
+			<add-attribute value="/css/style-responsive.css" />
+		</put-list-attribute>
+		<put-list-attribute name="scripts">
+			<add-attribute value="http://cdn.mark.ah.cn/jquery/1.11.3/jquery-1.11.3.min.js" />
+			<add-attribute value="/js/jquery-ui-1.9.2.custom.min.js" />
+			<add-attribute value="/js/jquery-migrate-1.2.1.min.js" />
+			
+			<add-attribute value="http://cdn.mark.ah.cn/bootstrap/3.0.3/js/bootstrap.min.js" />
+			
+			<add-attribute value="/js/modernizr.min.js" />
+			<add-attribute value="/js/jquery.nicescroll.js" />
+			<add-attribute value="/js/scripts.js" />
+		</put-list-attribute>
+	</definition>
+
+	<!-- 首页 -->
+	<definition name="dashboard" extends="baseTemplate">
+		<put-attribute name="title" value="首页看板" />
+		<put-attribute name="content" value="/WEB-INF/pages/dashboard.jsp" />
+		
+		<put-list-attribute name="scripts" inherit="true">
+			<add-attribute value="/js/flot-chart/jquery.flot.js" />
+			<add-attribute value="/js/flot-chart/jquery.flot.tooltip.js" />
+			<add-attribute value="/js/flot-chart/jquery.flot.resize.js" />
+			
+            <add-attribute value="/js/morris-chart/morris.js" />
+            <add-attribute value="/js/morris-chart/raphael-min.js" />
+            <add-attribute value="/js/dashboard-chart-init.js" />
+            
+        </put-list-attribute>
+	</definition>
+	
+	<!--500错误处理页面 -->
+	<definition name="error_500" extends="baseTemplate">
+		<put-attribute name="title" value="500错误页面" />
+		<put-attribute name="content" value="/WEB-INF/pages/error/500.jsp" />
+	</definition>
+
+	<!--404 错误处理页面 -->
+	<definition name="error_404" extends="baseTemplate">
+		<put-attribute name="title" value="404错误页面" />
+		<put-attribute name="content" value="/WEB-INF/pages/error/404.jsp" />
+	</definition>
+
+	<!--401 错误处理页面 -->
+	<definition name="error_401" extends="baseTemplate">
+		<put-attribute name="title" value="访问受限页面" />
+		<put-attribute name="content" value="/WEB-INF/pages/error/401.jsp" />
+	</definition>
+	
+</tiles-definitions>
+
